@@ -13,12 +13,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Enable CORS for all routes
-app.use(
-  cors({
-    origin: "*", // You can change this to specific origins in production
-    methods: "GET,PUT,POST,DELETE,PATCH",
-  })
-);
+app.use(cors());
 
 // Importing routes
 const errorController = require("../src/middleware/errorHandler");
