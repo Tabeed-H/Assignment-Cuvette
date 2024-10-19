@@ -7,6 +7,7 @@ import AuthProvider from "react-auth-kit/AuthProvider";
 import AuthOutlet from "@auth-kit/react-router/AuthOutlet";
 import Verification from "./pages/verification/verification";
 import Signup from "./pages/signup/signup";
+import Dashboard from "./pages/dashboard/dashboard";
 
 const store = createStore({
   authName: "author_token",
@@ -24,6 +25,7 @@ const AppRoutes = () => {
 
         <Route element={<AuthOutlet fallbackPath="/" />}>
           <Route path="/verify" element={<Verification />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Route>
 
         <Route

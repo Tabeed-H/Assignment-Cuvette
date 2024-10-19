@@ -37,7 +37,7 @@ const Login = () => {
 
     try {
       const result = await loginUser(data);
-      console.log(result);
+      localStorage.auth_token = "";
       signIn({
         auth: {
           token: result.data.token,
@@ -53,9 +53,11 @@ const Login = () => {
         !result.data.data.isPhoneVerified
       ) {
         // console.log(token);
-        await sendEmailOtp(null, token);
-        await sendPhoneOtp(null, token);
+        await sendEmailOtp(null, result.data.token);
+        await sendPhoneOtp(null, result.data.token);
         navigate("/verify");
+      } else {
+        navigate("/dashboard");
       }
     } catch (err) {
       setError("Login failed. Please try again.");
@@ -84,8 +86,8 @@ const Login = () => {
       <div className="w-full max-w-sm md:max-w-md p-8 border border-gray-300 rounded-lg shadow-md mt-20 md:mt-0 md:mr-5 mr-0">
         <h1 className="text-2xl font-semibold mb-2 text-center">Log in</h1>
         <p className="text-gray-500 text-center mb-6">
-          Lorem Ipsum is simply dummy text{" "}
-          <span className="font-bold" onClick={handleSignup}>
+          Lorem Ipsum is simply dummy text or
+          <span className="font-bold pointer" onClick={handleSignup}>
             Sign up
           </span>
         </p>

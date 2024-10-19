@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Base URL for the backend API
-const backendUrl = "https://assignment-cuvette.onrender.com/v1/user";
+const backendUrl = "https://assignment-cuvette.onrender.com/v1";
 
 /**
  * Function to handle API response.
@@ -22,6 +22,7 @@ const handleResponse = (response) => {
  * @returns {Object} - Error message.
  */
 const handleError = (error) => {
+  console.log(error);
   if (axios.isAxiosError(error) && error.response) {
     return { error: error.response.data?.message || "Network error" };
   }
@@ -41,7 +42,7 @@ export const loginUser = async (data) => {
   };
 
   try {
-    const response = await axios(`${backendUrl}/login`, options);
+    const response = await axios(`${backendUrl}/user/login`, options);
     return handleResponse(response);
   } catch (error) {
     return handleError(error);
@@ -61,10 +62,30 @@ export const doSignUp = async (data) => {
   };
 
   try {
-    const response = await axios(`${backendUrl}/signup`, options); // Assuming the endpoint is /signup
+    const response = await axios(`${backendUrl}/user/signup`, options); // Assuming the endpoint is /signup
     return handleResponse(response);
   } catch (error) {
     return handleError(error);
+  }
+};
+
+export const getUserInfo = async (token, id) => {
+  try {
+    // Make a GET request to the user info endpoint
+    const response = await axios.get(`${backendUrl}/user/${id}`, {
+      headers: {
+        Authorization: token, // Passing the token in the Authorization header
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user information:", error);
+
+    // You can customize this error handling based on your API response
+    return {
+      error: "Failed to fetch user information. Please try again later.",
+    };
   }
 };
 
@@ -76,13 +97,13 @@ export const doSignUp = async (data) => {
 export const sendEmailOtp = async (data, token) => {
   const options = {
     method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: token },
-    mode: "no-cors",
-    data: JSON.stringify(data),
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   };
 
   try {
-    const response = await axios(`${backendUrl}/send-email-otp`, options);
+    const response = await axios(`${backendUrl}/user/send-email-otp`, options);
     return handleResponse(response);
   } catch (error) {
     return handleError(error);
@@ -99,11 +120,14 @@ export const verifyEmailOtp = async (data, token) => {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: token },
     mode: "no-cors",
-    data: JSON.stringify(data),
+    data: JSON.stringify({ otp: data }),
   };
 
   try {
-    const response = await axios(`${backendUrl}/verify-email-otp`, options);
+    const response = await axios(
+      `${backendUrl}/user/verify-email-otp`,
+      options
+    );
     return handleResponse(response);
   } catch (error) {
     return handleError(error);
@@ -118,12 +142,13 @@ export const verifyEmailOtp = async (data, token) => {
 export const sendPhoneOtp = async (data, token) => {
   const options = {
     method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: token },
-    data: JSON.stringify(data),
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   };
 
   try {
-    const response = await axios(`${backendUrl}/send-phone-otp`, options);
+    const response = await axios(`${backendUrl}/user/send-phone-otp`, options);
     return handleResponse(response);
   } catch (error) {
     return handleError(error);
@@ -139,11 +164,54 @@ export const verifyPhoneOtp = async (data, token) => {
   const options = {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: token },
+    data: JSON.stringify({ otp: data }),
+  };
+
+  try {
+    const response = await axios(
+      `${backendUrl}/user/verify-phone-otp`,
+      options
+    );
+    return handleResponse(response);
+  } catch (error) {
+    return handleError(error);
+  }
+};
+
+/**
+ * Function to send a POST request to add a job.
+ * @param {Object} data - Job data (jobTitle, jobDescription, experienceLevel, candidates, endDate).
+ * @returns {Object} - API response or error.
+ */
+export const addJob = async (data, token) => {
+  const options = {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: token },
     data: JSON.stringify(data),
   };
 
   try {
-    const response = await axios(`${backendUrl}/verify-phone-otp`, options);
+    const response = await axios(`${backendUrl}/jobs/create`, options);
+    return handleResponse(response);
+  } catch (error) {
+    return handleError(error);
+  }
+};
+
+/**
+ * Function to send job emails to candidates.
+ * @param {string} jobId - The ID of the job for which emails are to be sent.
+ * @returns {Object} - API response or error.
+ */
+export const sendEmailToCandidates = async (jobId, token) => {
+  const options = {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: token },
+    data: JSON.stringify({ jobId: jobId }),
+  };
+
+  try {
+    const response = await axios(`${backendUrl}/jobs/send-job-emails`, options);
     return handleResponse(response);
   } catch (error) {
     return handleError(error);
