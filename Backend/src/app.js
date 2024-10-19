@@ -7,10 +7,6 @@ const db = require("./db/db");
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Use body-parser middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
 // Enable CORS for all routes
 app.use(
   cors({
@@ -23,10 +19,14 @@ app.use(
       "X-Callback-Type",
       "Content-Type",
       "Accept",
-      "Authorization", // If you are sending an authorization header
+      "Authorization",
+      "Access-Control-Allow-Origin",
     ],
   })
 );
+// Use body-parser middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Importing routes
 const errorController = require("../src/middleware/errorHandler");
