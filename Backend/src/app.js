@@ -1,4 +1,3 @@
-// const path = require("path");
 const express = require("express");
 require("dotenv").config();
 const cors = require("cors");
@@ -13,7 +12,21 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Enable CORS for all routes
-app.use(cors());
+app.use(
+  cors({
+    origin: "*", // Replace with your frontend URL
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Allowed methods
+    credentials: true, // Allow cookies to be sent with requests
+    allowedHeaders: [
+      "Origin",
+      "X-Requested-With",
+      "X-Callback-Type",
+      "Content-Type",
+      "Accept",
+      "Authorization", // If you are sending an authorization header
+    ],
+  })
+);
 
 // Importing routes
 const errorController = require("../src/middleware/errorHandler");
