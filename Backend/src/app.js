@@ -13,7 +13,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Enable CORS for all routes
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://172.20.10.5:5173",
+      "https://assignment-cuvette-eta.vercel.app/",
+    ], // You can change this to specific origins in production
+    methods: "GET,PUT,POST,DELETE,PATCH",
+    allowedHeaders: [
+      "Origin",
+      "X-Requested-With",
+      "X-Callback-Type",
+      "Content-Type",
+      "Accept",
+      "Access-Control-Allow-Origin",
+    ],
+  })
+);
 
 // Importing routes
 const errorController = require("../src/middleware/errorHandler");
