@@ -62,7 +62,7 @@ export const doSignUp = async (data) => {
   };
 
   try {
-    const response = await axios(`${backendUrl}/user/signup`, options); // Assuming the endpoint is /signup
+    const response = await axios(`${backendUrl}/user/signup`, options);
     return handleResponse(response);
   } catch (error) {
     return handleError(error);
@@ -71,18 +71,15 @@ export const doSignUp = async (data) => {
 
 export const getUserInfo = async (token, id) => {
   try {
-    // Make a GET request to the user info endpoint
     const response = await axios.get(`${backendUrl}/user/${id}`, {
       headers: {
-        Authorization: token, // Passing the token in the Authorization header
+        Authorization: token,
       },
     });
 
     return response.data;
   } catch (error) {
     console.error("Error fetching user information:", error);
-
-    // You can customize this error handling based on your API response
     return {
       error: "Failed to fetch user information. Please try again later.",
     };

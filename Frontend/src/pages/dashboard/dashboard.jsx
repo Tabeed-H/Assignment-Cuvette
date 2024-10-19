@@ -113,7 +113,6 @@ function Dashboard() {
                 </svg>
               </a>
             </li>
-            {/* Add more sidebar items here */}
           </ul>
         </aside>
 
@@ -123,14 +122,13 @@ function Dashboard() {
             <div className="flex justify-end mb-4">
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-lg"
-                onClick={() => setShowAddJob(true)} // Show AddJob form
+                onClick={() => setShowAddJob(true)}
               >
                 Create Interview
               </button>
             </div>
           )}
 
-          {/* Show AddJob form if showAddJob is true */}
           {showAddJob && <AddJob onClose={handleAddJobClose} />}
         </main>
       </div>

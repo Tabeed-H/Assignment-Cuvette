@@ -39,14 +39,13 @@ function AddJob({ onClose }) {
       candidates,
       endDate,
     };
-
-    // Step 1: Add the job
+    // Add Job
     const addJobResponse = await addJob(jobData, token);
     console.log(addJobResponse);
 
-    // Step 2: If job is added successfully, send emails
+    // Job Added - Send Email
     if (!addJobResponse.error) {
-      const jobId = addJobResponse.data.data._id; // Assuming the response contains the job ID
+      const jobId = addJobResponse.data.data._id;
 
       const emailResponse = await sendEmailToCandidates(jobId, token);
 

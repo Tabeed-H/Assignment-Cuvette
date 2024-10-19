@@ -75,7 +75,7 @@ const Verification = () => {
   };
 
   const handleContinue = () => {
-    navigate("/dashboard"); // Replace with your actual route logic
+    navigate("/dashboard");
   };
 
   return (
