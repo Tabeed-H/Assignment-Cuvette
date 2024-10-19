@@ -17,13 +17,6 @@ app.use(
   cors({
     origin: "*", // You can change this to specific origins in production
     methods: "GET,PUT,POST,DELETE,PATCH",
-    allowedHeaders: [
-      "Origin",
-      "X-Requested-With",
-      "X-Callback-Type",
-      "Content-Type",
-      "Accept",
-    ],
   })
 );
 
